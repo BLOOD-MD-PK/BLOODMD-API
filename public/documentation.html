@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BLOOD MD | API - Fast & Flexible</title>
+  <meta name="description" content="Complete BLOOD MD API documentation. Fast, secure, and flexible for all your development needs.">
+  <meta name="robots" content="index, follow">
+
+  <link rel="icon" href="https://ibb.co/CK6gZqVM" type="image/jpeg">
+  <link rel="apple-touch-icon" href="https://ibb.co/GQY2kFjZ">
+  <link rel="manifest" href="/manifest.json">
+  <meta property="og:title" content="BLOOD MD | API - Fast & Flexible">
+  <meta property="og:description" content="Complete and reliable public API for developers.">
+  <meta property="og:image" content="https://ibb.co/zT4j4hg4">
+  <meta property="og:url" content="https://bloodmd-api.vercel.app">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="en_US">
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "BLOOD MD | API",
+      "url": "https://bloodmd-api.vercel.app",
+      "description": "API Documentation by BLOOD MD. Fast, secure, and flexible.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "BLOOD MD Developer Network"
+      }
+    }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons Script -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      --bg-primary: #0a0a0c;
+      --bg-secondary: rgba(255, 255, 255, 0.03);
+      --bg-glass: rgba(18, 18, 24, 0.65);
+      --bg-glass-hover: rgba(255, 255, 255, 0.08);
+      --text-primary: #ffffff;
+      --text-secondary: rgba(255, 255, 255, 0.7);
+      --text-muted: rgba(255, 255, 255, 0.45);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --accent-color: #ffffff;
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      --blur: blur(20px);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Light Theme Settings */
+    body.light-theme {
+      --bg-primary: #f4f5f7;
+      --bg-secondary: rgba(0, 0, 0, 0.02);
+      --bg-glass: rgba(255, 255, 255, 0.75);
+      --bg-glass-hover: rgba(0, 0, 0, 0.04);
+      --text-primary: #121214;
+      --text-secondary: rgba(0, 0, 0, 0.7);
+      --text-muted: rgba(0, 0, 0, 0.5);
+      --border-color: rgba(0, 0, 0, 0.08);
+      --accent-color: #121214;
+      --shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+      transition: background 0.4s ease, color 0.4s ease;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.03) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.02) 0%, transparent 40%);
+    }
+
+    body.light-theme {
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(0, 0, 0, 0.02) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(0, 0, 0, 0.01) 0%, transparent 40%);
+    }
+
+    .loading-screen {
+      position: fixed;
+      inset: 0;
+      background: var(--bg-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.4s ease;
+    }
+
+    .loading-content {
+      text-align: center;
+    }
+
+    .loading-spinner {
+      width: 45px;
+      height: 45px;
+      border: 3px solid var(--border-color);
+      border-top-color: var(--text-primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    .loading-text {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      margin-bottom: 3rem;
+      font-size: 1.1rem;
+    }
+
+    h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.5px;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .glass {
+      background: var(--bg-glass);
+      backdrop-filter: var(--blur);
+      -webkit-backdrop-filter: var(--blur);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+
+    .search-container {
+      position: relative;
+      max-width: 550px;
+      margin: 0 auto 3rem;
+    }
+
+    #search-input {
+      width: 100%;
+      padding: 1.1rem 1.5rem 1.1rem 3.2rem;
+      background: var(--bg-glass);
+      backdrop-filter: var(--blur);
+      -webkit-backdrop-filter: var(--blur);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      transition: var(--transition);
+      box-shadow: var(--shadow);
+    }
+
+    #search-input:focus {
+      outline: none;
+      border-color: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.05);
+    }
+
+    body.light-theme #search-input:focus {
+      border-color: rgba(0, 0, 0, 0.2);
+      box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.03);
+    }
+
+    .search-container svg {
+      position: absolute;
+      left: 1.2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      width: 18px;
+      height: 18px;
+    }
+
+    .welcome-section {
+      padding: 2.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .welcome-section p {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+
+    .statistics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 4rem;
+    }
+
+    .stat-item {
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .stat-item:hover {
+      background: var(--bg-glass-hover);
+      transform: translateY(-4px);
+    }
+
+    .stat-item svg {
+      width: 32px;
+      height: 32px;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+    }
+
+    .stat-item span {
+      display: block;
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-item p {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .section-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    #api-categories {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+
+    .category-card {
+      padding: 2rem;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .category-card:hover {
+      border-color: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.04);
+    }
+    
+    body.light-theme .category-card:hover {
+      border-color: rgba(0, 0, 0, 0.15);
+      background: rgba(0, 0, 0, 0.02);
+    }
+
+    .category-header {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .category-header svg {
+      width: 22px;
+      height: 22px;
+      color: var(--text-primary);
+    }
+
+    .endpoint-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .endpoint-item {
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    body.light-theme .endpoint-item {
+      background: rgba(0, 0, 0, 0.01);
+    }
+
+    .endpoint-item:hover {
+      background: var(--bg-glass-hover);
+      transform: translateX(4px);
+      border-color: var(--text-muted);
+    }
+
+    .endpoint-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .method-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .method-badge.get { background: rgba(52, 211, 153, 0.15); color: #34d399; }
+    .method-badge.post { background: rgba(96, 165, 250, 0.15); color: #60a5fa; }
+    .method-badge.put { background: rgba(251, 146, 60, 0.15); color: #fb923c; }
+    .method-badge.delete { background: rgba(248, 113, 113, 0.15); color: #f87171; }
+
+    .endpoint-path {
+      font-family: monospace;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .endpoint-desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .no-results {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 3rem;
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    .theme-switch-container {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      z-index: 1000;
+    }
+
+    .theme-btn {
+      background: var(--bg-glass);
+      backdrop-filter: var(--blur);
+      -webkit-backdrop-filter: var(--blur);
+      border: 1px solid var(--border-color);
+      padding: 0.8rem;
+      border-radius: 12px;
+      cursor: pointer;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+      box-shadow: var(--shadow);
+    }
+
+    .theme-btn:hover {
+      background: var(--bg-glass-hover);
+      transform: scale(1.05);
+    }
+
+    .theme-btn .sun-icon { display: none; }
+    body.light-theme .theme-btn .moon-icon { display: none; }
+    body.light-theme .theme-btn .sun-icon { display: block; }
+
+    footer {
+      margin-top: 6rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .copyright {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .social-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: var(--transition);
+      padding: 0.6rem 1.2rem;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .social-link:hover {
+      color: var(--text-primary);
+      background: var(--bg-glass-hover);
+      transform: translateY(-2px);
+    }
+
+    .social-link svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* Modal System */
+    .api-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 2000;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .api-modal.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-content {
+      width: 100%;
+      max-width: 750px;
+      max-height: 85vh;
+      overflow-y: auto;
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+      border-radius: 24px;
+    }
+
+    .api-modal.active .modal-content {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .close-modal {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 8px;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+    }
+
+    .close-modal:hover {
+      background: var(--bg-glass-hover);
+      color: var(--text-primary);
+    }
+
+    .modal-body {
+      padding: 2rem;
+    }
+
+    .tester-controls {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .tester-method {
+      padding: 0.85rem 1rem;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      font-weight: 600;
+      outline: none;
+    }
+    
+    body.light-theme .tester-method {
+      background: rgba(0, 0, 0, 0.02);
+    }
+
+    .tester-url {
+      flex: 1;
+      padding: 0.85rem 1rem;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      color: var(--text-primary);
+      font-family: monospace;
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    body.light-theme .tester-url {
+      background: rgba(0, 0, 0, 0.02);
+    }
+
+    .send-btn {
+      padding: 0.85rem 1.5rem;
+      background: var(--text-primary);
+      color: var(--bg-primary);
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .send-btn:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .response-container {
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.5rem;
+    }
+    
+    body.light-theme .response-container {
+      background: rgba(0, 0, 0, 0.03);
+    }
+
+    .response-meta {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.85rem;
+    }
+
+    .response-status {
+      font-weight: 700;
+    }
+    
+    .status-success { color: #34d399; }
+    .status-error { color: #f87171; }
+
+    .response-time {
+      color: var(--text-muted);
+    }
+
+    .response-output {
+      min-height: 180px;
+      max-height: 300px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      padding: 1rem;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.85rem;
+      overflow: auto;
+      color: #34d399;
+    }
+
+    body.light-theme .response-output {
+      background: rgba(255, 255, 255, 0.7);
+      color: #065f46;
+    }
+
+    .response-placeholder {
+      color: var(--text-muted);
+      text-align: center;
+      padding-top: 4rem;
+    }
+
+    @media (max-width: 768px) {
+      .container { padding: 2rem 1rem; }
+      h1 { font-size: 2.25rem; }
+      .statistics { grid-template-columns: 1fr; }
+      #api-categories { grid-template-columns: 1fr; }
+      .tester-controls { flex-direction: column; }
+      .tester-method, .tester-url, .send-btn { width: 100%; }
+      .footer-content { flex-direction: column; text-align: center; }
+      .social-links { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="loading-screen">
+  <div class="loading-content">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">LOADING BLOOD MD APIs...</div>
+  </div>
+</div>
+
+<div class="theme-switch-container">
+  <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
+    <i data-lucide="moon" class="moon-icon"></i>
+    <i data-lucide="sun" class="sun-icon"></i>
+  </button>
+</div>
+
+<main class="container">
+  <h1>BLOOD MD | API</h1>
+  <p class="subtitle">Fast, Secure & Premium Developer Hub</p>
+
+  <section class="search-container">
+    <input type="text" id="search-input" placeholder="Search API endpoints..." aria-label="Search API endpoints">
+    <i data-lucide="search"></i>
+  </section>
+
+  <section class="welcome-section glass">
+    <h2>Welcome to the Nexus</h2>
+    <p>Explore high-performance, flexible public endpoints built for seamless integration. Instant responses, modular structures, and absolute data clarity engineered for modern software development architectures.</p>
+  </section>
+
+  <section class="statistics">
+    <div class="stat-item glass">
+      <i data-lucide="terminal"></i>
+      <span id="total-endpoints">0</span>
+      <p>Total Endpoints</p>
+    </div>
+    <div class="stat-item glass">
+      <i data-lucide="activity"></i>
+      <span id="online-endpoints">0</span>
+      <p>Active</p>
+    </div>
+    <div class="stat-item glass">
+      <i data-lucide="shield-check"></i>
+      <span id="uptime-percentage">100%</span>
+      <p>System Status</p>
+    </div>
+  </section>
+
+  <h2 class="section-title"><i data-lucide="layers"></i> API Registries</h2>
+  <section id="api-categories">
+    <!-- Categories Dynamic Anchor -->
+  </section>
+
+  <footer>
+    <div class="footer-content">
+      <div class="copyright">
+        &copy; <span id="current-year"></span> <strong>BLOOD MD | API</strong> – Powered by BLOOD MD Developer Network.<br>
+        Architect: Mr BLOOD-MD – <a href="https://github.com/BLOOD-MD-PK" target="_blank" style="color: var(--text-secondary); text-decoration: none;">github.com/BLOOD-MD-PK</a>
+      </div>
+      <div class="social-links">
+        <a href="https://github.com/BLOOD-MD-PK" target="_blank" rel="noopener noreferrer" class="social-link glass">
+          <i data-lucide="github"></i><span>GitHub</span>
+        </a>
+        <a href="https://whatsapp.com/channel/0029Vb867uIKwqSWDtOS2X3N" target="_blank" rel="noopener noreferrer" class="social-link glass">
+          <i data-lucide="message-square"></i><span>WhatsApp</span>
+        </a>
+      </div>
+    </div>
+  </footer>
+</main>
+
+<div class="api-modal" id="apiModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-content glass">
+    <div class="modal-header">
+      <h3 id="modalTitle">API Core Terminal</h3>
+      <button class="close-modal" aria-label="Close API tester">
+        <i data-lucide="x"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="tester-controls">
+        <select class="tester-method" id="testerMethod">
+          <option value="GET">GET</option>
+          <option value="POST">POST</option>
+        </select>
+        <input type="text" class="tester-url" id="testerUrl" readonly>
+        <button class="send-btn" id="sendRequestBtn">
+          <i data-lucide="play" style="width:16px;height:16px;"></i> Run
+        </button>
+      </div>
+      <div class="response-container">
+        <div class="response-meta">
+          <div class="response-status" id="responseStatus">STATUS: IDLE</div>
+          <div class="response-time" id="responseTime">0ms</div>
+        </div>
+        <div class="response-output" id="responseOutput">
+          <div class="response-placeholder">Execute endpoint request to review response matrix payload.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // API Dataset Matrix
+  const apiCategories = [
+    {
+      name: "Downloader APIs",
+      icon: "download",
+      endpoints: [
+        { method: "GET", path: "/api/download/youtube", description: "Download YouTube videos via URL parameter query stream safely." },
+        { method: "GET", path: "/api/download/tiktok", description: "Fetch highly parsed non-watermarked TikTok production videos." },
+        { method: "GET", path: "/api/download/instagram", description: "Instantly parse media arrays from Instagram post hooks." }
+      ]
+    },
+    {
+      name: "Anime Operations",
+      icon: "sparkles",
+      endpoints: [
+        { method: "GET", path: "/api/anime/random", description: "Returns randomly distributed anime visual nodes with metadata arrays." },
+        { method: "GET", path: "/api/anime/waifu", description: "Generates explicit asset streams from clean Waifu datasets." }
+      ]
+    },
+    {
+      name: "Utility Elements",
+      icon: "sliders",
+      endpoints: [
+        { method: "GET", path: "/api/utils/qrcode", description: "Generates structural clean scalar matrix graphic QR codes securely." },
+        { method: "POST", path: "/api/utils/shorten", description: "Minifies high-entropy long string uniform resource locations instantly." }
+      ]
+    },
+    {
+      name: "AI & Intelligence",
+      icon: "cpu",
+      endpoints: [
+        { method: "GET", path: "/api/ai/chat", description: "Direct real-time contextual pipeline stream into LLM structural nodes." },
+        { method: "GET", path: "/api/ai/imagine", description: "Fast latent text-to-image generator powered by matrix distribution weights." }
+      ]
+    }
+  ];
+
+  // DOM Bootstrapping & Setup
+  document.getElementById('current-year').textContent = new Date().getFullYear();
+
+  // Initialize Lucide Vectors
+  lucide.createIcons();
+
+  // Dark/Light Theme Handler Engine
+  const themeToggle = document.getElementById('themeToggle');
+  const body = document.body;
+
+  if (localStorage.getItem('theme') === 'light') {
+    body.classList.add('light-theme');
+  }
+
+  themeToggle.addEventListener('click', () => {
+    body.classList.toggle('light-theme');
+    localStorage.setItem('theme', body.classList.contains('light-theme') ? 'light' : 'dark');
+  });
+
+  // Loader Clean exit Sequence
+  window.addEventListener('load', () => {
+    const loader = document.querySelector('.loading-screen');
+    setTimeout(() => {
+      loader.style.opacity = '0';
+      setTimeout(() => loader.style.display = 'none', 400);
+    }, 600);
+  });
+
+  // Category Render Matrix Pipeline
+  const categoriesContainer = document.getElementById('api-categories');
+  let totalCount = 0;
+
+  function renderCategories(filterText = '') {
+    categoriesContainer.innerHTML = '';
+    let visibleEndpoints = 0;
+
+    apiCategories.forEach(category => {
+      const filtered = category.endpoints.filter(e => 
+        e.path.toLowerCase().includes(filterText.toLowerCase()) || 
+        e.description.toLowerCase().includes(filterText.toLowerCase())
+      );
+
+      if (filtered.length === 0) return;
+      visibleEndpoints += filtered.length;
+
+      const card = document.createElement('div');
+      card.className = 'category-card glass';
+      
+      card.innerHTML = `
+        <div class="category-header">
+          <i data-lucide="${category.icon}"></i>
+          <h3>${category.name}</h3>
+        </div>
+        <ul class="endpoint-list">
+          ${filtered.map(e => `
+            <li class="endpoint-item" onclick="openTerminal('${e.method}', '${e.path}')">
+              <div class="endpoint-meta">
+                <span class="method-badge ${e.method.toLowerCase()}">${e.method}</span>
+                <span class="endpoint-path">${e.path}</span>
+              </div>
+              <div class="endpoint-desc">${e.description}</div>
+            </li>
+          `).join('')}
+        </ul>
+      `;
+      categoriesContainer.appendChild(card);
+    });
+
+    if (visibleEndpoints === 0) {
+      categoriesContainer.innerHTML = `<div class="no-results">No endpoint clusters match your query parameters.</div>`;
+    }
+    lucide.createIcons();
+  }
+
+  // Count & Metric Processing Node
+  apiCategories.forEach(c => totalCount += c.endpoints.length);
+  document.getElementById('total-endpoints').textContent = totalCount;
+  document.getElementById('online-endpoints').textContent = totalCount; // All active inside static index
+
+  // Event Driven Search Filtering Pipeline
+  document.getElementById('search-input').addEventListener('input', (e) => {
+    renderCategories(e.target.value);
+  });
+
+  // Initialization State
+  renderCategories();
+
+  // Modal Interactive Controller System
+  const modal = document.getElementById('apiModal');
+  const methodSelect = document.getElementById('testerMethod');
+  const urlInput = document.getElementById('testerUrl');
+  const runBtn = document.getElementById('sendRequestBtn');
+  const statusDisplay = document.getElementById('responseStatus');
+  const timeDisplay = document.getElementById('responseTime');
+  const outputContainer = document.getElementById('responseOutput');
+
+  window.openTerminal = function(method, path) {
+    methodSelect.value = method;
+    urlInput.value = `https://bloodmd-api.vercel.app${path}`;
+    
+    // Clear last terminal outputs
+    statusDisplay.textContent = "STATUS: READY";
+    statusDisplay.className = "response-status";
+    timeDisplay.textContent = "0ms";
+    outputContainer.innerHTML = `<div class="response-placeholder">Terminal initialized. Press Run to send network packet request wrapper.</div>`;
+    
+    modal.classList.add('active');
+  };
+
+  document.querySelector('.close-modal').addEventListener('click', () => {
+    modal.classList.remove('active');
+  });
+
+  window.addEventListener('click', (e) => {
+    if (e.target === modal) modal.classList.remove('active');
+  });
+
+  // Simulation Terminal Engine Logic
+  runBtn.addEventListener('click', () => {
+    outputContainer.innerHTML = `<div style="text-align:center;padding-top:4rem;color:var(--text-secondary)">Pinging remote cluster array...</div>`;
+    
+    const start = performance.now();
+    setTimeout(() => {
+      const duration = Math.round(performance.now() - start);
+      statusDisplay.textContent = "STATUS: 200 SUCCESS";
+      statusDisplay.className = "response-status status-success";
+      timeDisplay.textContent = `${duration}ms`;
+
+      const mockResponse = {
+        status: true,
+        creator: "Mr BLOOD-MD",
+        timestamp: new Date().toISOString(),
+        execution_time: `${duration}ms`,
+        data: {
+          message: "Secure transaction cluster executed successfully.",
+          endpoint: urlInput.value,
+          payload: "Dynamic stream object node metrics online."
+        }
+      };
+      
+      outputContainer.innerHTML = `<pre>${JSON.stringify(mockResponse, null, 2)}</pre>`;
+    }, 450);
+  });
+</script>
+</body>
+</html>
