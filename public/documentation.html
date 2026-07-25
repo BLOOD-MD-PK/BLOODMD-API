@@ -354,8 +354,6 @@
 
     .method-badge.get { background: rgba(52, 211, 153, 0.15); color: #34d399; }
     .method-badge.post { background: rgba(96, 165, 250, 0.15); color: #60a5fa; }
-    .method-badge.put { background: rgba(251, 146, 60, 0.15); color: #fb923c; }
-    .method-badge.delete { background: rgba(248, 113, 113, 0.15); color: #f87171; }
 
     .endpoint-path {
       font-family: monospace;
@@ -731,7 +729,7 @@
           <option value="GET">GET</option>
           <option value="POST">POST</option>
         </select>
-        <input type="text" class="tester-url" id="testerUrl" readonly>
+        <input type="text" class="tester-url" id="testerUrl">
         <button class="send-btn" id="sendRequestBtn">
           <i data-lucide="play" style="width:16px;height:16px;"></i> Run
         </button>
@@ -750,50 +748,61 @@
 </div>
 
 <script>
-  // API Dataset Matrix
+  // Dynamic Real API Category Matrix
   const apiCategories = [
     {
-      name: "Downloader APIs",
+      name: "Downloaders & Media",
       icon: "download",
       endpoints: [
-        { method: "GET", path: "/api/download/youtube", description: "Download YouTube videos via URL parameter query stream safely." },
-        { method: "GET", path: "/api/download/tiktok", description: "Fetch highly parsed non-watermarked TikTok production videos." },
-        { method: "GET", path: "/api/download/instagram", description: "Instantly parse media arrays from Instagram post hooks." }
+        { method: "GET", path: "/api/ytdl", description: "Download YouTube videos and audio streams." },
+        { method: "GET", path: "/api/ytsearch", description: "Search YouTube videos via direct queries." },
+        { method: "GET", path: "/api/ttdl", description: "Download TikTok videos without watermarks." },
+        { method: "GET", path: "/api/ttsearch", description: "Search TikTok content via keywords." },
+        { method: "GET", path: "/api/igdl", description: "Fetch Instagram photos, videos & reels." },
+        { method: "GET", path: "/api/fbdl", description: "Download Facebook public media content." },
+        { method: "GET", path: "/api/spotifydl", description: "Extract Spotify tracks directly." },
+        { method: "GET", path: "/api/spotidl", description: "Secondary Spotify audio downloader node." },
+        { method: "GET", path: "/api/twitterdl", description: "Parse and download Twitter videos and GIFs." }
       ]
     },
     {
-      name: "Anime Operations",
-      icon: "sparkles",
-      endpoints: [
-        { method: "GET", path: "/api/anime/random", description: "Returns randomly distributed anime visual nodes with metadata arrays." },
-        { method: "GET", path: "/api/anime/waifu", description: "Generates explicit asset streams from clean Waifu datasets." }
-      ]
-    },
-    {
-      name: "Utility Elements",
-      icon: "sliders",
-      endpoints: [
-        { method: "GET", path: "/api/utils/qrcode", description: "Generates structural clean scalar matrix graphic QR codes securely." },
-        { method: "POST", path: "/api/utils/shorten", description: "Minifies high-entropy long string uniform resource locations instantly." }
-      ]
-    },
-    {
-      name: "AI & Intelligence",
+      name: "AI & Machine Learning",
       icon: "cpu",
       endpoints: [
-        { method: "GET", path: "/api/ai/chat", description: "Direct real-time contextual pipeline stream into LLM structural nodes." },
-        { method: "GET", path: "/api/ai/imagine", description: "Fast latent text-to-image generator powered by matrix distribution weights." }
+        { method: "GET", path: "/api/gemini", description: "Conversational Google Gemini AI node." },
+        { method: "GET", path: "/api/blackboxai", description: "Code generation and AI problem solving." },
+        { method: "GET", path: "/api/llama-3.3-70b-versatile", description: "High-capacity Meta Llama 3.3 LLM processing." },
+        { method: "GET", path: "/api/txt2img", description: "Generate images from text prompts." },
+        { method: "GET", path: "/api/upscale4k", description: "Enhance image resolution to high quality." }
+      ]
+    },
+    {
+      name: "Search & Information",
+      icon: "search",
+      endpoints: [
+        { method: "GET", path: "/api/googlesearch", description: "Scrape and return web Google search results." },
+        { method: "GET", path: "/api/duckduckgo", description: "Privacy-focused search engine queries." },
+        { method: "GET", path: "/api/pinterest", description: "Search Pinterest visual media assets." },
+        { method: "GET", path: "/api/githubstalk", description: "Get complete user profile metrics on GitHub." },
+        { method: "GET", path: "/api/npmsearch", description: "Search Node Package Manager repositories." }
+      ]
+    },
+    {
+      name: "Utilities & Tools",
+      icon: "sliders",
+      endpoints: [
+        { method: "GET", path: "/api/qrcodegenerator", description: "Create clean QR Code matrix renders." },
+        { method: "GET", path: "/api/readqr", description: "Decode image QR codes to string values." },
+        { method: "GET", path: "/api/removebg", description: "Remove image background programmatically." },
+        { method: "GET", path: "/api/translate", description: "Multi-language text translator node." },
+        { method: "GET", path: "/api/ssweb", description: "Capture full web URL screenshot renders." }
       ]
     }
   ];
 
-  // DOM Bootstrapping & Setup
   document.getElementById('current-year').textContent = new Date().getFullYear();
-
-  // Initialize Lucide Vectors
   lucide.createIcons();
 
-  // Dark/Light Theme Handler Engine
   const themeToggle = document.getElementById('themeToggle');
   const body = document.body;
 
@@ -806,7 +815,6 @@
     localStorage.setItem('theme', body.classList.contains('light-theme') ? 'light' : 'dark');
   });
 
-  // Loader Clean exit Sequence
   window.addEventListener('load', () => {
     const loader = document.querySelector('.loading-screen');
     setTimeout(() => {
@@ -815,7 +823,6 @@
     }, 600);
   });
 
-  // Category Render Matrix Pipeline
   const categoriesContainer = document.getElementById('api-categories');
   let totalCount = 0;
 
@@ -861,20 +868,16 @@
     lucide.createIcons();
   }
 
-  // Count & Metric Processing Node
   apiCategories.forEach(c => totalCount += c.endpoints.length);
   document.getElementById('total-endpoints').textContent = totalCount;
-  document.getElementById('online-endpoints').textContent = totalCount; // All active inside static index
+  document.getElementById('online-endpoints').textContent = totalCount;
 
-  // Event Driven Search Filtering Pipeline
   document.getElementById('search-input').addEventListener('input', (e) => {
     renderCategories(e.target.value);
   });
 
-  // Initialization State
   renderCategories();
 
-  // Modal Interactive Controller System
   const modal = document.getElementById('apiModal');
   const methodSelect = document.getElementById('testerMethod');
   const urlInput = document.getElementById('testerUrl');
@@ -885,13 +888,12 @@
 
   window.openTerminal = function(method, path) {
     methodSelect.value = method;
-    urlInput.value = `https://bloodmd-api.vercel.app${path}`;
+    urlInput.value = `${window.location.origin}${path}`;
     
-    // Clear last terminal outputs
     statusDisplay.textContent = "STATUS: READY";
     statusDisplay.className = "response-status";
     timeDisplay.textContent = "0ms";
-    outputContainer.innerHTML = `<div class="response-placeholder">Terminal initialized. Press Run to send network packet request wrapper.</div>`;
+    outputContainer.innerHTML = `<div class="response-placeholder">Terminal initialized. Press Run to send network request.</div>`;
     
     modal.classList.add('active');
   };
@@ -904,31 +906,29 @@
     if (e.target === modal) modal.classList.remove('active');
   });
 
-  // Simulation Terminal Engine Logic
-  runBtn.addEventListener('click', () => {
-    outputContainer.innerHTML = `<div style="text-align:center;padding-top:4rem;color:var(--text-secondary)">Pinging remote cluster array...</div>`;
+  // Real Dynamic API Execution Logic
+  runBtn.addEventListener('click', async () => {
+    outputContainer.innerHTML = `<div style="text-align:center;padding-top:4rem;color:var(--text-secondary)">Executing live endpoint request...</div>`;
     
     const start = performance.now();
-    setTimeout(() => {
+    const selectedMethod = methodSelect.value;
+    const targetUrl = urlInput.value;
+
+    try {
+      const res = await fetch(targetUrl, { method: selectedMethod });
       const duration = Math.round(performance.now() - start);
-      statusDisplay.textContent = "STATUS: 200 SUCCESS";
-      statusDisplay.className = "response-status status-success";
+      const data = await res.json();
+
+      statusDisplay.textContent = `STATUS: ${res.status} ${res.ok ? 'OK' : 'ERROR'}`;
+      statusDisplay.className = `response-status ${res.ok ? 'status-success' : 'status-error'}`;
       timeDisplay.textContent = `${duration}ms`;
 
-      const mockResponse = {
-        status: true,
-        creator: "Mr BLOOD-MD",
-        timestamp: new Date().toISOString(),
-        execution_time: `${duration}ms`,
-        data: {
-          message: "Secure transaction cluster executed successfully.",
-          endpoint: urlInput.value,
-          payload: "Dynamic stream object node metrics online."
-        }
-      };
-      
-      outputContainer.innerHTML = `<pre>${JSON.stringify(mockResponse, null, 2)}</pre>`;
-    }, 450);
+      outputContainer.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+    } catch (err) {
+      statusDisplay.textContent = "STATUS: FETCH ERROR";
+      statusDisplay.className = "response-status status-error";
+      outputContainer.innerHTML = `<pre style="color:#f87171">${err.message}</pre>`;
+    }
   });
 </script>
 </body>
