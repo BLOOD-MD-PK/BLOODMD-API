@@ -1,0 +1,18 @@
+{
+  "name": "bloodmd-api",
+  "version": "1.0.0",
+  "description": "BloodMD API Service",
+  "main": "api/index.js",
+  "scripts": {
+    "start": "node api/index.js",
+    "dev": "nodemon api/index.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "cors": "^2.8.5",
+    "axios": "^1.7.2"
+  },
+  "engines": {
+    "node": ">=18.x"
+  }
+}
