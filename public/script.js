@@ -1,0 +1,1 @@
+console.log("BloodMD API Frontend Loaded.");
